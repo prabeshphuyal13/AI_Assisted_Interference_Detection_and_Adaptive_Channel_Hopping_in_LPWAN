@@ -1,0 +1,26 @@
+{
+  "features": [
+    "meanRSSI",
+    "varRSSI",
+    "meanSNR",
+    "varSNR",
+    "CFO",
+    "PLR",
+    "CRC",
+    "SF",
+    "CR",
+    "link_lost"
+  ],
+  "params": {
+    "max_depth": 8,
+    "max_features": "sqrt",
+    "min_samples_leaf": 1,
+    "n_estimators": 30
+  },
+  "test_accuracy": 0.9866284622731614,
+  "test_macro_f1": 0.9865604323798188,
+  "total_nodes": 3030,
+  "critical_error_rate": 0.008708272859216255,
+  "n_train": 4187,
+  "n_test": 1047
+}
