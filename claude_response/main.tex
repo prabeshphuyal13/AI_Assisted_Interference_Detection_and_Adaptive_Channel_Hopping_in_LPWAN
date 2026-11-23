@@ -1,0 +1,351 @@
+\documentclass[10pt,a4paper]{article}
+
+% KEC/InJET template is MS Word based. This LaTeX source reproduces the stated
+% page, font, spacing, heading, table, figure, and reference requirements as closely
+% as possible with standard LaTeX packages. The journal requires 8 pages maximum.
+% The template states A4 paper (192 mm x 262 mm) and separately specifies exact
+% margins; A4 is used with the explicit 1.25 in left and 1 in other margins.
+
+\usepackage[a4paper,top=1in,bottom=1in,left=1.25in,right=1in]{geometry}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage{tgtermes}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{\setmainfont{Tinos}}
+\fi
+\usepackage{amsmath,amssymb}
+\usepackage{fix-cm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\urlstyle{same}
+\usepackage{xcolor}
+\usepackage{float}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setstretch{1.15}
+\raggedbottom
+\emergencystretch=2em
+\setlength{\headheight}{14pt}
+\setlength{\footskip}{18pt}
+
+\captionsetup{font={footnotesize},labelfont={footnotesize},labelsep=period,justification=centering,singlelinecheck=false}
+\captionsetup[table]{position=top}
+\captionsetup[figure]{position=bottom}
+
+\renewcommand{\arraystretch}{1.05}
+\setlist[itemize]{leftmargin=1.3em,itemsep=0pt,topsep=2pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0pt,topsep=2pt,parsep=0pt}
+
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\bfseries\fontsize{10}{12}\selectfont}{\thesection.}{0.45em}{}
+\titleformat{\subsection}{\normalfont\bfseries\itshape\fontsize{10}{12}\selectfont}{\thesubsection}{0.45em}{}
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+\titlespacing*{\subsection}{0pt}{4pt}{2pt}
+
+\fancypagestyle{journal}{%
+  \fancyhf{}
+  \fancyhead[C]{\fontsize{8}{9}\selectfont International Journal on Engineering Technology (InJET) Volume 4, Issue no. 1, Dec 2026}
+  \fancyfoot[R]{\fontsize{8}{9}\selectfont\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+\fancypagestyle{firstpage}{%
+  \fancyhf{}
+  \fancyfoot[L]{\fontsize{8}{9}\selectfont * Corresponding author: \placeholder{TO BE PROVIDED}}
+  \fancyfoot[R]{\fontsize{8}{9}\selectfont\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+\pagestyle{journal}
+
+% Journal template placeholders are retained for fields not supplied in the report.
+\newcommand{\placeholder}[1]{[\textit{#1}]}
+\newcommand{\reportfigure}[2]{%
+  \IfFileExists{#1}{\includegraphics[width=\linewidth,height=1.15in,keepaspectratio]{#1}}{%
+    \fbox{\begin{minipage}[c][1.0in][c]{0.92\linewidth}\centering\small
+    \textbf{Figure placeholder}\\[2pt]
+    Replace with the project's original report figure:\\
+    \texttt{\detokenize{#1}}
+    \end{minipage}}%
+  }%
+}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\begin{center}
+{\fontsize{10}{12}\selectfont International Journal on Engineering Technology (InJET)\par}
+{\fontsize{9}{11}\selectfont\itshape \url{www.kec.edu.np/kec-journal/}\par}
+{\fontsize{9}{11}\selectfont\itshape Volume 4, Issue no. 1, Dec 2026\par}
+{\fontsize{8}{10}\selectfont Received Date: \placeholder{TO BE PROVIDED}\qquad Accepted Date: \placeholder{TO BE PROVIDED}\par}
+{\fontsize{8}{10}\selectfont ISSN: 3021-940X (Print)\qquad DOI: \placeholder{TO BE PROVIDED}\par}
+\vspace{5pt}
+{\fontsize{17}{20}\selectfont\bfseries AI-Assisted Interference Detection and Adaptive Channel Hopping in Low-Power Wide-Area Networks\par}
+\vspace{7pt}
+{\fontsize{13}{15}\selectfont Arun Khadka$^{1}$, Prabesh Phuyal$^{1}$, Sandesh Neupane$^{1}$, Sujal Koirala$^{1}$\par}
+\vspace{4pt}
+{\fontsize{8}{10}\selectfont $^{1}$Department of Electronics and Computer Engineering, Thapathali Campus, Kathmandu, Nepal\par}
+{\fontsize{8}{10}\selectfont Emails: \placeholder{EMAILS TO BE PROVIDED}\par}
+{\fontsize{8}{10}\selectfont * Corresponding author: \placeholder{CORRESPONDING AUTHOR AND EMAIL TO BE PROVIDED}\par}
+\end{center}
+
+\vspace{5pt}
+{\fontsize{9}{11}\selectfont
+\textbf{Abstract.} Increasing congestion in unlicensed Industrial, Scientific and Medical (ISM) bands can degrade LoRa links through interference, packet loss, and propagation-related fading. This paper presents an embedded link-monitoring and adaptation architecture that separates payload and control traffic into two LoRa planes: a 433 MHz data plane and a fixed 445 MHz out-of-band control plane. A Random Forest classifier maps a 10-dimensional feature vector derived from the Received Signal Strength Indicator (RSSI), Signal-to-Noise Ratio (SNR), carrier frequency offset (CFO), packet loss rate (PLR), cyclic redundancy check (CRC) failures, spreading factor (SF), coding rate (CR), and a link-lost flag into three classes: normal, interference, and fading. For interference, an exponentially weighted moving average (EWMA)-based selection engine ranks candidate frequency/SF options and coordinates a synchronized hop over the control plane; for fading, the receiver adapts SF or CR without changing channel. The embedded model uses 30 trees with maximum depth 8 and was converted to native C/C++ conditional structures for ESP32 execution. On the held-out test set, the Random Forest achieved 98.66\% accuracy and 0.87\% critical Jam--Fade error, compared with 93.22\% and 3.77\% for the optimized rule-based baseline. In field deployment, accuracy was 87.81\% versus 72.19\%, while inference time was approximately 429.72~$\mu$s versus 4.32~$\mu$s. The results show improved classification performance at the cost of higher inference overhead, with field results remaining preliminary.
+\par}
+\vspace{3pt}
+{\fontsize{9}{11}\selectfont\textbf{Keywords:} channel hopping, ESP32, interference detection, IoT, LoRa, LPWAN, machine learning, Random Forest.\par}
+
+\section{Introduction}
+The Internet of Things (IoT) connects large numbers of sensor-equipped physical devices, many of which are battery-powered and expected to operate for extended periods without maintenance. Low Power Wide Area Networks (LPWANs) provide long-range, low-power communication for such deployments, while Long Range Wide Area Network (LoRaWAN) uses the LoRa physical layer for wide-area networking. Rapid growth in IoT deployments and increasing use of unlicensed ISM spectrum are important contributors to congestion and link degradation \cite{ericsson,augustin}.
+
+LoRa uses Chirp Spread Spectrum (CSS), in which symbols are represented by frequency-swept chirps. The spreading factor (SF) controls symbol duration and creates a trade-off between sensitivity, transmission rate, and transmission time \cite{augustin,reddy}. Although LoRa transmissions using different SFs can be quasi-orthogonal, imperfect orthogonality and intentional interference can still cause packet collisions and loss \cite{augustin,reddy,croce}. Standard LoRaWAN mechanisms such as Adaptive Data Rate (ADR) are principally intended for static or slowly changing link conditions and do not directly address fast, severe, or temporary interference \cite{reddy}.
+
+Interference and fading also require different corrective actions. Interference or jamming motivates moving away from the affected spectrum, whereas fading or propagation loss may be addressed by adapting radio parameters on the existing channel. A classifier that confuses these conditions can therefore trigger the wrong action. Prior work reviewed here includes machine-learning-based spectrum sensing, power/SF adaptation, long-range frequency hopping, and gateway-side multi-packet reception \cite{jha,reynders,bukhari,wang}. We identify a remaining gap at the embedded link layer: lightweight edge-side inference must distinguish interference from fading while maintaining synchronized channel changes under constrained hardware.
+
+This work addresses that gap with a dual-radio prototype. The data plane operates at 433 MHz, while an out-of-band control plane at 445 MHz carries synchronization, configuration, acknowledgements, and hop timing. A Random Forest model performs three-class link-state classification from a hybrid observation window, and an EWMA-based engine selects the next frequency/SF option following interference. The main experimental comparison is against an optimized fixed threshold classifier using the same feature set and evaluation partitions.
+
+\section{Related Work and Research Gap}
+LoRa's CSS-based modulation provides resilience to low signal-to-noise conditions, but dense deployments remain susceptible to collisions and intentional interference \cite{augustin,croce,haque}. LoRa SFs are also not perfectly orthogonal in practice, and continuous-wave or targeted interference can prevent successful packet reception \cite{croce,haque}. These observations motivate link-state monitoring based on more than received signal strength alone.
+
+Cognitive radio architectures provide a conceptual basis for sensing channel conditions and adapting transmission parameters \cite{jha,haykin}. Threshold-based detection can confuse severe path loss with active interference, whereas machine-learning methods using physical-layer features can capture nonlinear relationships among signal and error metrics. Random Forests combine multiple decision trees through majority voting and can be expressed as nested conditional comparisons after training \cite{breiman_cart,breiman_rf}. The prototype therefore uses supervised classification at the receiving edge rather than depending on gateway-side signal processing.
+
+The literature review also considers adaptive power/SF control \cite{reynders}, adaptive data rate schemes \cite{abdelfadeel}, LR-FHSS \cite{bukhari}, and collision-recovery approaches such as mLoRa and CoLoRa \cite{wang,tong}. The project does not attempt to replace those methods. Instead, it focuses on an embedded control loop in which the receiver first classifies the current link state, then performs either parameter adaptation or coordinated spectrum mobility.
+
+\begin{table}[htbp]
+\centering
+\caption{Research gap and corresponding design response}
+\label{tab:gap}
+\fontsize{8}{9.2}\selectfont
+\begin{tabular}{p{0.45\linewidth} p{0.45\linewidth}}
+\toprule
+\textbf{Gap identified} & \textbf{Response in the prototype} \\
+\midrule
+Gateway-centric processing can leave edge nodes without local link-state awareness & Edge-side metric collection and embedded Random Forest inference \\
+RSSI-only or rigid thresholds can confuse interference and fading & Ten-feature vector combining signal, error, frequency-offset, and configuration information \\
+Severe interference may require spectrum mobility rather than continued decoding & Channel/SF selection engine activated on interference detection \\
+In-band control can be unavailable when the data channel is degraded & Dedicated 445 MHz control plane for synchronized configuration changes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Proposed System and Methodology}
+\subsection{Dual-radio architecture}
+Each prototype node contains one ESP32 development board and two SX1278 LoRa transceivers \cite{semtech,espressif}. The data-plane radio operates at a base frequency of 433 MHz over nine 200 kHz-spaced candidate channels from 433.000 to 434.600 MHz. A 37.5 kHz guard band is specified on each side of a 125 kHz bandwidth signal. The initial data configuration is channel 1 (433 MHz), SF 8, and CR 4/5. The control-plane radio operates at a fixed 445 MHz with SF 12 and CR 4/8. It carries hop proposals, SF/CR configuration, acknowledgements, and synchronization information.
+
+\textbf{Data plane.} The data radio carries payload packets and exposes receiver-side telemetry. After packet reception, RSSI, SNR, CFO, and radio configuration information are collected. Sequence-number gaps are used by the firmware to identify packet loss.
+
+\textbf{Control plane.} The control radio remains outside the data-channel set and is used for a handshake. After classification, the receiver sends a control packet containing the proposed data-plane frequency, SF, and CR. The transmitter validates the request, applies the configuration, and returns an acknowledgement. The separation is intended to avoid the synchronization failure that would occur if the same degraded link were responsible for both payload and control exchange.
+
+% REPORT FIGURE: Replace with the project's original ``Figure 4-1. Proposed system architecture'' figure.
+\begin{figure}[htbp]
+\centering
+\reportfigure{figures/system_architecture.png}{Figure 4-1}
+\caption{Proposed dual-radio system architecture.}
+\label{fig:architecture}
+\end{figure}
+
+Both SX1278 modules share one SPI bus with independent chip-select lines. DIO0 lines provide interrupts and the modules have independent reset connections. The shared bus was selected because the two radio modules are not accessed simultaneously for control and data operations. Both radios and the ESP32 use 3.3 V logic, so level shifting is not required in the prototype.
+
+\subsection{Link metrics and feature extraction}
+The receiver obtains RSSI, SNR, CFO, SF, and CR from the SX1278 interface. Packet Loss Rate (PLR) is calculated over an observation window bounded by either 10 packets or 5 s, whichever limit is reached first. We define
+\begin{equation}
+\mathrm{PLR}=\left(1-\frac{N_{\mathrm{received}}}{N_{\mathrm{expected}}}\right)\times100,\qquad
+N_{\mathrm{expected}}=\mathrm{Seq}_{\max}-\mathrm{Seq}_{\min}+1.
+\label{eq:plr}
+\end{equation}
+
+A FIFO window is used to calculate mean and variance of RSSI and SNR, while CFO is taken from the most recent reception. CRC failures are counted within the same window. SF and CR are treated as configuration features. When a window closes with zero successfully received packets, the firmware assigns RSSI = -140 dBm and SNR = -20 dB and sets a binary \textit{link\_lost} flag rather than using an out-of-range sentinel.
+
+The resulting 10-dimensional input is
+\begin{equation}
+\boldsymbol{x}= [\mathrm{meanRSSI},\ \mathrm{varRSSI},\ \mathrm{meanSNR},\ \mathrm{varSNR},\ \mathrm{CFO},\ \mathrm{PLR},\ \mathrm{CRC},\ \mathrm{SF},\ \mathrm{CR},\ \mathrm{link\_lost}].
+\label{eq:features}
+\end{equation}
+
+Here PLR is represented over the range [0,1] for the feature vector, while CRC is a windowed failure count. SF and CR are encoded categorical parameters. The same feature definition is used for training and on-device inference.
+
+% REPORT FIGURE: Replace with the project's original ``Figure 4-2. Feature extraction workflow'' figure.
+\begin{figure}[htbp]
+\centering
+\reportfigure{figures/feature_extraction.png}{Figure 4-2}
+\caption{Feature extraction workflow used by the receiver before inference.}
+\label{fig:features}
+\end{figure}
+
+\subsection{Random Forest selection and training}
+A Random Forest (RF) was selected after comparing it with a single decision tree, logistic regression, an RBF-kernel Support Vector Machine (SVM) \cite{cortes}, and a small multilayer perceptron (MLP). The decision criterion considered classification performance and the feasibility of embedded deployment. Our comparison shows that the SVM obtained a slightly higher test F1 score and lower critical error than RF, but required 154 support vectors and an exponential kernel evaluation per inference. The other lightweight alternatives did not satisfy the critical-error safety criterion. RF was therefore selected as the balance between classification performance and embedded implementation complexity.
+
+For a decision-tree node with class probabilities $p_i$, we use the Gini impurity
+\begin{equation}
+I_G(t)=1-\sum_i p_i^2.
+\label{eq:gini}
+\end{equation}
+The final RF uses 30 trees with a maximum tree depth of 8. A grid search tested 60 configurations using the training data with 5-fold cross-validation. The search required the class 1/2 critical-error rate to remain below 1\%; among surviving configurations, model size and performance were considered when choosing the final configuration. The resulting model contains 3,030 total nodes and an exported firmware footprint of approximately 73 KB.
+\begin{figure}[htbp]
+\centering
+\reportfigure{figures/classifier_comparison.png}{Figure 4-3}
+\caption{Comparison of alternative classifiers on the same 80/20 dataset split.}
+\label{fig:classifier}
+\end{figure}
+
+The labelled dataset contains 5,400 windows: 1,800 normal, 1,800 interference, and 1,800 fading/attenuation. The 80/20 stratified split yields 4,320 training windows and 1,080 held-out test windows. The Normal and Fading classes were collected across three SF/CR configurations (8/5, 10/5, and 12/8); the Interference class was instead generated using the jammer scenario/position design described in Sec. 4, with the legitimate link's own SF/CR held fixed.
+
+\subsection{Output classes and adaptive action}
+The classifier maps each window to one of three link states:
+\begin{itemize}
+\item \textbf{Class 0 - Normal:} the link continues using its current channel and parameters.
+\item \textbf{Class 1 - Interference:} the receiver invokes synchronized channel/SF selection and sends the resulting configuration through the 445 MHz control plane.
+\item \textbf{Class 2 - Fading:} the receiver changes SF or CR while remaining on the current channel.
+\end{itemize}
+
+\subsection{EWMA-based channel/SF hopping}
+Following an interference classification, the receiver evaluates 45 candidate options formed from nine data-plane frequencies and five usable SFs, SF $\in\{7,8,9,10,11\}$. Each option stores a recent packet-loss history and last-use information. The current option is restricted, and the smoothed PLR is updated as
+\begin{equation}
+\widetilde{\mathrm{PLR}}_a=\alpha\,\mathrm{PLR}_{\mathrm{window}}+(1-\alpha)\widetilde{\mathrm{PLR}}_a.
+\label{eq:ewma}
+\end{equation}
+
+The candidate score is
+\begin{equation}
+\mathrm{score}(a)=w_c\left(1-\widetilde{\mathrm{PLR}}_a\right)+w_s f_{\mathrm{SF}}(a)+w_f f_{\mathrm{dist}}(a),
+\label{eq:score}
+\end{equation}
+where $w_c=1.0$, $w_s=0.8$, and $w_f=0.6$. Restricted options receive a score of $-\infty$. The engine otherwise chooses the highest-scoring available option. After three or more consecutive interference cases without recovery, the procedure forces SF 11; if all options are restricted, the engine chooses the frequency farthest from the last jammed frequency, forces SF 11, and clears the restrictions.
+
+% REPORT FIGURE: Replace with the project's original ``Figure 5-2. Channel/SF selection flow of jamming response engine'' figure.
+\begin{figure}[htbp]
+\centering
+\reportfigure{figures/channel_hopping_flowchart.png}{Figure 5-2}
+\caption{Channel/SF selection procedure used following interference detection.}
+\label{fig:hopping}
+\end{figure}
+
+\section{Implementation and Experimental Setup}
+The firmware was developed in C/C++ under the Arduino framework, with RadioLib used for SX1278 interfacing \cite{semtech}. The ML workflow was developed in Python using scikit-learn \cite{pedregosa}; TensorFlow/Keras and TensorFlow Lite Micro were also part of the development toolchain \cite{david}. The embedded RF classifier was exported from the trained model as nested C/C++ conditional structures and compiled for execution on the ESP32 without a Python runtime or external compute during inference.
+
+The experimental dataset was generated with two LoRa nodes under three scenarios. For normal operation, the nodes communicated at a fixed separation in an open environment without intentional interference or physical obstacles. For intentional interference, a third LoRa transmitter acted as a jammer. We used three interference cases: matched frequency and matched SF; matched frequency with randomly varied jammer SF from SF7 to SF12; and near-frequency interference with randomly varied jammer SF. Two jammer positions were used, near and far from the receiver. For fading/attenuation, the transmitter was enclosed in aluminium foil to emulate strong attenuation while keeping other communication parameters aligned with the normal case. Transmit power and antenna orientation were held constant during collection.
+
+The rule-based baseline was optimized on the training data using a stratified split and fixed random seed 42. Seven hundred and twenty threshold combinations were tested. The optimized thresholds were SNR for clear state = 3.0, PLR for clear state = 0.12, PLR for jammed state = 0.5, RSSI for fading = -118 dBm, and SNR for fading = 2. The baseline remained a fixed conditional classifier rather than a learned model.
+
+\begin{table}[htbp]
+\centering
+\caption{Key prototype and model configuration}
+\label{tab:config}
+\fontsize{8}{9.2}\selectfont
+\begin{tabular}{p{0.57\linewidth} p{0.28\linewidth}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Data-plane frequency set & 433.000--434.600 MHz, 9 channels \\
+Control-plane frequency & 445 MHz \\
+Data-plane initial SF / CR & SF 8 / 4/5 \\
+Control-plane SF / CR & SF 12 / 4/8 \\
+Observation window & 10 packets or 5 s \\
+Feature vector dimension & 10 \\
+RF trees / maximum depth & 30 / 8 \\
+RF total nodes & 3,030 \\
+Exported model footprint & $\approx$73 KB \\
+Candidate frequency/SF options & 9 $\times$ 5 = 45 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Results and Discussion}
+\subsection{Offline held-out evaluation}
+The held-out set contains 1,080 windows with class support of 358 normal, 348 interference, and 341 fading windows. The RF achieved 98.66\% accuracy, 98.66\% macro-F1, and a 0.87\% critical error rate for Jam--Fade confusion. The optimized threshold baseline achieved 93.22\% accuracy, 93.31\% macro-F1, and 3.77\% critical error. The RF therefore reduced the critical error relative to the baseline and met the project-defined below-1\% safety gate on the held-out test set.
+
+The classwise analysis shows that RF retained a fading recall of 0.968, compared with 0.915 for the threshold baseline. Normal-to-jammed false alarms were eliminated for RF on the held-out test set, while the baseline produced 8.9\% of normal windows as jammed. These results support the use of a multi-feature classifier instead of rigid single-threshold conditions for separating interference and fading.
+
+% REPORT FIGURE: Replace with the project's original ``Figure 6-1. Offline held-out performance of the Random Forest and baseline model'' figure.
+\begin{figure}[htbp]
+\centering
+\reportfigure{figures/offline_performance.png}{Figure 6-1}
+\caption{Offline held-out performance comparison for the Random Forest and threshold baseline.}
+\label{fig:offline}
+\end{figure}
+
+\subsection{Feature importance}
+Our Gini-importance and permutation-importance analysis identifies mean SNR and mean RSSI as the two most influential features. CRC, PLR, and CFO provide additional information, whereas varRSSI, varSNR, SF, CR, and the link-lost flag have smaller contributions. The agreement between the two importance measures is evidence that the feature ranking is not driven solely by one importance measure. Consistently low-importance features could be considered for future firmware simplification, although no such removal was performed in the evaluated model.
+
+\subsection{Field deployment}
+The field deployment set contains 320 windows collected during a live two-node hardware run, with class support of 90 normal, 155 interference, and 75 fading windows. RF accuracy decreased from 98.66\% offline to 87.81\% in deployment, while the threshold baseline decreased from 93.22\% to 72.19\%. RF macro-F1 was 86.60\% in deployment compared with 65.64\% for the baseline. The Jam--Fade critical error was 9.57\% for RF and 20.87\% for the baseline.
+
+The deployment degradation was concentrated in the fading class. RF normal recall was 100\%, and jamming recall was 89.03\%. Fading recall decreased from 96.8\% offline to 70.67\% in deployment. Sixteen of 75 fading windows were classified as jamming, while six were classified as normal. The most critical error direction, jamming predicted as fading, occurred in 3.87\% of deployment jamming windows and was not observed in the offline test. A related error, jamming predicted as normal, rose from 0.86\% offline to 7.10\% in deployment (11 of 155 jamming windows); because this misclassification triggers no corrective hop at all, it is arguably at least as operationally significant as the jam-to-fade case. These results reinforce our conclusion that field fading conditions were not fully represented by the controlled training scenarios.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of offline and field evaluation}
+\label{tab:results}
+\fontsize{8}{9.2}\selectfont
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Metric} & \textbf{RF offline} & \textbf{RF field} & \textbf{Threshold offline} & \textbf{Threshold field} \\
+\midrule
+Test size $n$ & 1,080 & 320 & 1,080 & 320 \\
+Accuracy & 98.66\% & 87.81\% & 93.22\% & 72.19\% \\
+Macro-F1 & 98.66\% & 86.60\% & 93.31\% & 65.64\% \\
+Critical Jam--Fade error & 0.87\% & 9.57\% & 3.77\% & 20.87\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Inference overhead}
+The principal computational trade-off is between classification quality and inference cost. We measured approximately 429.72~$\mu$s for the RF inference and 4.32~$\mu$s for the threshold baseline, approximately 99 times more computation for RF. Thus, the RF is not superior in every dimension: it requires substantially more inference time, even though both measurements remain in the microsecond range.
+
+
+We consider the additional computation acceptable within the prototype context because RF met the offline critical-error threshold and preserved a lower critical error than the baseline during field evaluation. At the same time, the increased inference cost and the approximately 73 KB exported model footprint should be considered when targeting more constrained embedded platforms.
+
+\section{Limitations and Future Work}
+Several limitations constrain the scope of these results. First, the field deployment accuracy is materially lower than the offline accuracy, especially for fading detection; we attribute this to the difficulty of representing real fading behaviour in the controlled dataset. Second, the field evaluation contains only 320 windows and is therefore treated as preliminary. Third, the dataset was generated using a single intentional interference source and a fixed transmitter-receiver separation, so simultaneous multiple-source interference was not evaluated.
+
+The hopping engine cannot verify a candidate channel before moving to it; congestion on multiple candidates can therefore produce repeated hops. The control-plane link at 445 MHz is itself a dependency for synchronization, and its vulnerability was not fully evaluated. Broadband jamming that saturates the entire operating band also cannot be mitigated by channel switching alone.
+
+Future work includes multi-source real-world benchmarking, continuous learning to adapt the classifier to newly observed channel conditions, stronger control-plane protection and synchronization strategies, and extension from the two-node prototype to a multi-transmitter LPWAN network.
+
+\section{Conclusion}
+This study presents an end-to-end embedded link-monitoring architecture for LoRa communication that combines dual-radio control, multi-feature classification, and adaptive spectrum/parameter control. A 10-dimensional feature vector is formed from receiver telemetry and protocol-derived metrics over a hybrid 10-packet/5-second observation window. A 30-tree, depth-8 Random Forest is compiled into C/C++ conditional structures and executed on an ESP32. Interference is handled through a 445 MHz control-plane handshake and EWMA-based selection among 45 channel/SF options, while fading triggers SF/CR adaptation on the current channel.
+
+On the held-out dataset, RF achieved 98.66\% accuracy with 0.87\% critical Jam--Fade error, compared with 93.22\% and 3.77\% for the optimized threshold baseline. In field deployment, RF achieved 87.81\% accuracy and 9.57\% critical error, compared with 72.19\% and 20.87\% for the baseline. The corresponding inference times were approximately 429.72~$\mu$s and 4.32~$\mu$s. The results therefore support our central finding: RF provides better classification performance in the evaluated prototype at a substantial computational cost, while the field results remain preliminary and further validation is required, particularly for fading and control-plane resilience.
+
+\section*{Acknowledgements}
+The authors thank the Institute of Engineering, Tribhuvan University, and the Department of Electronics and Computer Engineering, Thapathali Campus, for supporting the project. The authors also acknowledge Er. Kobid Karkee for supervision, guidance, feedback, and support throughout the project, as well as the open-source contributors to the Arduino, ESP32, and LoRa software ecosystems.
+
+\begin{thebibliography}{99}
+\setstretch{1.5}
+\fontsize{10}{12}\selectfont
+
+\bibitem{ericsson} Ericsson, “IoT connections outlook,” Nov. 2025. [Online]. Available: \url{https://www.ericsson.com/en/reports-and-papers/mobility-report/dataforecasts/iot-connections-outlook}. Accessed: Jul. 5, 2026.
+\bibitem{augustin} A. Augustin, J. Yi, T. Clausen, and W. M. Townsley, “A study of LoRa: Long range and low power networks for the Internet of Things,” \textit{Sensors}, vol. 16, no. 9, p. 1466, 2016.
+\bibitem{reddy} B. S. Reddy, P. R. Kumar, and R. K. Jha, “Spreading factor optimization for interference mitigation in dense indoor LoRa networks,” in \textit{2023 IEEE IAS Global Conference on Emerging Technologies (GlobConET)}, 2023.
+\bibitem{croce} D. Croce, M. Gucciardo, S. Mangione, G. Santaromita, and I. Tinnirello, “Impact of LoRa imperfect orthogonality: Analysis of link-level performance,” \textit{IEEE Communications Letters}, vol. 22, no. 4, pp. 796--799, 2018.
+\bibitem{jha} R. K. Jha, “Application of machine learning and cognitive radio architectures for lightweight spectrum sensing in IoT systems,” \textit{Journal of Engineering Science and Technology Review (JESTR)}, vol. 18, no. 6, 2025.
+\bibitem{reynders} B. Reynders, W. Meert, and S. Pollin, “Power and spreading factor control in low power wide area networks,” in \textit{2017 IEEE International Conference on Communications (ICC)}, 2017, pp. 1--6.
+\bibitem{bukhari} J. Bukhari and Z. Zhang, “Understanding long range-frequency hopping spread spectrum (LR-FHSS) with real-world packet traces,” \textit{ACM Transactions on Sensor Networks}, 2024.
+\bibitem{wang} X. Wang, L. Kong, L. He, and G. Chen, “mLoRa: A multi-packet reception protocol in LoRa networks,” in \textit{2019 IEEE 27th International Conference on Network Protocols (ICNP)}, 2019, pp. 1--11.
+\bibitem{haque} M. A. Haque and A. Saifullah, “Mitigating jamming attacks in LoRa networks: A defense strategy against LoRa-based jammers,” in \textit{ACM International Symposium on Mobile Ad Hoc Networking and Computing (MobiHoc)}, Houston, TX, USA, 2025.
+\bibitem{haykin} S. Haykin, “Cognitive radio: Brain-empowered wireless communications,” \textit{IEEE Journal on Selected Areas in Communications}, vol. 23, no. 2, pp. 201--220, 2005.
+\bibitem{breiman_cart} L. Breiman, J. H. Friedman, R. O. Olshen, and C. J. Stone, \textit{Classification and Regression Trees}. Belmont, CA, USA: Wadsworth International Group, 1984.
+\bibitem{breiman_rf} L. Breiman, “Random forests,” \textit{Machine Learning}, vol. 45, no. 1, pp. 5--32, 2001.
+\bibitem{abdelfadeel} K. Q. Abdelfadeel, V. Cionca, and D. Pesch, “A fair adaptive data rate algorithm for LoRaWAN,” Poster paper, International Conference on Embedded Wireless Systems and Networks (EWSN), 2018.
+\bibitem{tong} S. Tong, Z. Xu, and J. Wang, “CoLoRa: Enabling multi-packet reception in LoRa,” in \textit{IEEE INFOCOM 2020 -- IEEE Conference on Computer Communications}, 2020.
+\bibitem{semtech} Semtech Corporation, \textit{SX1276/77/78/79 Datasheet: 137 MHz to 1020 MHz Low Power Long Range Transceiver}, rev. 7, Semtech Corporation, 2020.
+\bibitem{espressif} Espressif Systems, \textit{ESP32 Series Datasheet}, Espressif Systems, 2023.
+\bibitem{cortes} C. Cortes and V. Vapnik, “Support-vector networks,” \textit{Machine Learning}, vol. 20, no. 3, pp. 273--297, 1995.
+\bibitem{pedregosa} F. Pedregosa \textit{et al.}, “Scikit-learn: Machine learning in Python,” \textit{Journal of Machine Learning Research}, vol. 12, pp. 2825--2830, 2011.
+\bibitem{david} R. David \textit{et al.}, “TensorFlow Lite Micro: Embedded machine learning on TinyML systems,” in \textit{Proc. Machine Learning and Systems (MLSys)}, vol. 3, 2021, pp. 800--811.
+\end{thebibliography}
+
+\end{document}
